@@ -11,7 +11,6 @@ if response.status_code != 200:
     print("Error al conectar con la API.")
     exit()
 
-# Analizar el contenido de la página
 soup = BeautifulSoup(response.content, 'html.parser')
 rows = soup.find_all('tr')
 
@@ -19,18 +18,15 @@ if not rows:
     print("No se encontraron filas en el HTML.")
     exit()
 
-# Obtener la hora actual en UTC
 hora_actual = datetime.now(timezone.utc)
 
-# Estructuras para almacenar datos
 tiempos_actualizacion = {"BlackMarket": [], "Lymhurst": []}
 precios = {"BlackMarket": {}, "Lymhurst": {}}
 beneficios = []
 
-# Procesar las filas del HTML
 for row in rows[1:]:
     cols = row.find_all('td')
-    if len(cols) < 11:  # Verifica que haya suficientes columnas
+    if len(cols) < 11:  
         print(f"Fila con columnas insuficientes: {cols}")
         continue
 
@@ -86,26 +82,20 @@ for item_id, quality_black, mins_black in tiempos_actualizacion["BlackMarket"]:
         except Exception as e:
             print(f"Error comparando: {item_id} {quality_black} con {item_id_lym} {quality_lym}, Error: {e}")
 
-# Ordenar por item_id y beneficio (descendente)
 beneficios_ordenados = sorted(beneficios, key=lambda x: (x[0], -x[7]))
 
-# Filtrar el mejor beneficio por item_id
 mejores_beneficios = []
 for item_id, grupo in groupby(beneficios_ordenados, key=lambda x: x[0]):
     mejores_beneficios.append(max(grupo, key=lambda x: x[7]))
 
-# Ordenar los mejores beneficios de menor a mayor
 mejores_beneficios_ordenados = sorted(mejores_beneficios, key=lambda x: x[7])
 
 # Calcular porcentaje de diferencia
 porcentaje_diferencia = ((price_black - price_lym) / price_black) * 100
 
-# Calcular porcentaje de diferencia solo para Lymhurst
 porcentaje_diferencia_lym = ((price_black - price_lym) / price_lym) * 100
 
-# Iteración sobre los productos
 for item_id, quality_black, quality_lym, mins_lym, mins_black, price_black, price_lym, beneficio in mejores_beneficios_ordenados:
-    # Calcular porcentaje de diferencia solo para Lymhurst en cada iteración
     porcentaje_diferencia_lym = ((price_black - price_lym) / price_lym) * 100
     
     minutos_black_color = f'\033[91m{mins_black} mins\033[0m' if mins_black > 30 else f'\033[92m{mins_black} mins\033[0m'
