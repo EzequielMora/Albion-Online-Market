@@ -1,7 +1,11 @@
 # Albion-Online-Market
-Este es un codigo del juego Albion Online que usando la API puedes saber la diferencia de ciertos objetos en distintas ciudades 
-https://www.albion-online-data.com/
-
-Este mismo no esta terminado ya que le faltan cosas importantes como por ejempolo quer detecte cuando sigue siendo el mismo precio que antes y que no se vendio
-por ejemplo tienes x que se vendio hace mas de una hora (pero el precio todavia esta subido) con esto te lo va a tomar como valido y te lo va a mostrar aunque no exista esa oferta, bueno esto se puede solucionar con un lapzo_de_tiempo que calcule hace cuanto se subio el precio (mi codigo lo tiene) pero  me di cuenta de que no funciona ya que tambien puede pasar de que si un item x quer el precio es de 100 hace mas de una hora y ahoradespues de ese tiempo es de 100 otra vez este va a aprecr como que se subio hace mas de una hora aunque sea el mismo que ahora, con esto me parece que no tiene solucion ya que es algo de la API de albion online 
-
+Este proyecto utiliza la API de Albion Online para analizar precios de objetos en distintas ciudades y detectar oportunidades de arbitraje.
+API: https://www.albion-online-data.com/
+Estado del proyecto
+El proyecto no está terminado y presenta un problema con la validez de los precios.
+La API puede devolver precios antiguos que siguen figurando como activos aunque el objeto ya se haya vendido. Esto provoca que el programa considere ofertas que en realidad ya no existen.
+Problema
+Intenté solucionarlo usando un sistema que verifica hace cuánto se publicó el precio, pero no es completamente confiable.
+Si un objeto tenía un precio hace tiempo y luego vuelve a tener ese mismo precio, la API no permite distinguir entre ambos casos, por lo que el sistema lo interpreta como un precio antiguo.
+Conclusión
+Esta limitación no puede resolverse completamente desde el código, ya que depende de cómo la API maneja los datos.
